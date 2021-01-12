@@ -17,7 +17,7 @@ angular.module('app',[]).controller('indexController', function ($scope, $http) 
     };
 
     $scope.deleteProductById = function(id) {
-        $http.post(contextPath + '/products/del/' + id)
+        $http.delete(contextPath + '/products/' + id)
             .then(function (response) {
                 $scope.fillTable();
             });
