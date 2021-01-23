@@ -1,7 +1,6 @@
 package com.meretskiy.internet.market.controllers;
 
 import com.meretskiy.internet.market.dto.ProductDto;
-import com.meretskiy.internet.market.model.Product;
 import com.meretskiy.internet.market.services.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -29,7 +28,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public Product findProductById(@PathVariable Long id) {
+    public ProductDto findProductById(@PathVariable Long id) {
         return productService.findProductById(id).get();
     }
 
@@ -41,13 +40,13 @@ public class ProductController {
     @PostMapping
     //если запрос выполнится, то он вернет 201
     @ResponseStatus(HttpStatus.CREATED)
-    public Product saveNewProduct(@RequestBody Product product) {
-        product.setId(null);
-        return productService.saveOrUpdate(product);
+    public ProductDto saveNewProduct(@RequestBody ProductDto productDto) {
+        productDto.setId(null);
+        return productService.saveProduct(productDto);
     }
 
     @PutMapping
-    public Product updateProduct(@RequestBody Product product) {
-        return productService.saveOrUpdate(product);
+    public ProductDto updateProduct(@RequestBody ProductDto productDto) {
+        return productService.updateProduct(productDto);
     }
 }
