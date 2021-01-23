@@ -34,12 +34,25 @@ public class ProductService {
 //        return productRepository.findAll().stream().map(ProductDto::new).collect(Collectors.toList());
 //    }
 
-    public Optional<Product> findProductById(Long id) {
-        return productRepository.findById(id);
+    public Optional<ProductDto> findProductById(Long id) {
+        return productRepository.findById(id).map(ProductDto::new);
     }
 
-    public Product saveOrUpdate(Product product) {
-        return productRepository.save(product);
+    public ProductDto saveProduct(ProductDto productDto) {
+        Product newProduct = new Product();
+        newProduct.setTitle(productDto.getTitle());
+        newProduct.setPrice(productDto.getPrice());
+        productRepository.save(newProduct);
+        return productDto;
+    }
+
+    public ProductDto updateProduct(ProductDto productDto) {
+        Long id = productDto.getId();
+        Product product = productRepository.findById(id).get();
+        product.setTitle(productDto.getTitle());
+        product.setPrice(productDto.getPrice());
+        productRepository.save(product);
+        return productDto;
     }
 
     public void deleteProductById(Long id) {
