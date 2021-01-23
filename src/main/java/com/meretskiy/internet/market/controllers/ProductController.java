@@ -1,13 +1,12 @@
 package com.meretskiy.internet.market.controllers;
 
+import com.meretskiy.internet.market.dto.ProductDto;
 import com.meretskiy.internet.market.model.Product;
 import com.meretskiy.internet.market.services.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/products")
@@ -17,7 +16,7 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
-    public Page<Product> findAllProducts(
+    public Page<ProductDto> findAllProducts(
             @RequestParam(name = "min_price", defaultValue = "0") Integer minPrice,
             @RequestParam(name = "max_price", required = false) Integer maxPrice,
             @RequestParam(name = "title", required = false) String title,
