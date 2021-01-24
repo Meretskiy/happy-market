@@ -15,8 +15,19 @@ angular.module('app',[]).controller('indexController', function ($scope, $http) 
         }).then(function (response) {
                 //как только бэк пришлет данные, получаем список наших товаром на странице
                 $scope.ProductsPage = response.data;
+
+                let minPageIndex = pageIndex - 2;
+                if (minPageIndex < 1) {
+                    minPageIndex = 1;
+                }
+
+                let maxPageIndex = pageIndex + 2;
+                if (maxPageIndex > $scope.ProductsPage.totalPages) {
+                    maxPageIndex = $scope.ProductsPage.totalPages;
+                }
+
                 //генерируем набор чисел
-                $scope.PaginationArray = $scope.generatePagesIndexes(1, $scope.ProductsPage.totalPages);
+                $scope.PaginationArray = $scope.generatePagesIndexes(minPageIndex, maxPageIndex);
             });
     };
 

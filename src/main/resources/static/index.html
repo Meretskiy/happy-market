@@ -16,6 +16,27 @@
 <div class="container" ng-controller="indexController">
     <h1>Happy Market</h1>
 
+    <h3>Фильтр</h3>
+    <form novalidate ng-submit="fillTable()">
+        <div class="form-group row">
+            <div class="form-group col-md-3">
+                <label for="filterTitle">Название товара</label>
+                <input class="form-control" type="text" ng-model="filter.title" id="filterTitle">
+            </div>
+            <div class="form-group col-md-3">
+                <label for="filterMinPrice">Минимальная цена</label>
+                <input class="form-control" type="number" ng-model="filter.min_price" id="filterMinPrice">
+            </div>
+            <div class="form-group col-md-3">
+                <label for="filterMaxPrice">Максимальная цена</label>
+                <input class="form-control" type="number" ng-model="filter.max_price" id="filterMaxPrice">
+            </div>
+        </div>
+        <div>
+            <button class="btn btn-success" type="submit">Применить</button>
+        </div>
+    </form>
+
     <h3>Список товаров</h3>
     <table class="table table-hover" cellpadding="0" cellspacing="0">
 
@@ -39,8 +60,16 @@
 
     <nav aria-label="Page navigation">
         <ul class="pagination">
-            <li ng-class="page-item" ng-repeat="pageIndex in PaginationArray">
+            <li ng-class="ProductsPage.first ? 'page-item disabled' : 'page-item'">
+                <a class="page-link" ng-click="fillTable(ProductsPage.number)"><</a>
+            </li>
+
+            <li ng-class="ProductsPage.number == pageIndex - 1 ? 'page-item active' : 'page-item'" ng-repeat="pageIndex in PaginationArray">
                 <a class="page-link" ng-click="fillTable(pageIndex)">{{pageIndex}}</a>
+            </li>
+
+            <li ng-class="ProductsPage.last ? 'page-item disabled' : 'page-item'">
+                <a class="page-link" ng-click="fillTable(ProductsPage.number + 2)">></a>
             </li>
         </ul>
     </nav>
