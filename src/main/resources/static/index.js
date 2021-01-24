@@ -55,5 +55,35 @@ angular.module('app',[]).controller('indexController', function ($scope, $http) 
             });
     };
 
+    $scope.showCart = function () {
+        $http.get(contextPath + '/cart')
+            .then(function (response) {
+                $scope.ProductInCart = response.data;
+            });
+
+    };
+
+    $scope.addProductInCart = function (productId) {
+        $http.get(contextPath + '/cart/add/' + productId)
+            .then(function (response) {
+                $scope.showCart();
+            });
+    };
+
+    $scope.clearCart = function () {
+        $http.get(contextPath + '/cart/clear/')
+            .then(function (response) {
+                $scope.showCart();
+            });
+    };
+
+    $scope.deleteProductFromCart = function (productId) {
+        $http.get(contextPath + '/cart/clear/' + productId)
+            .then(function (response) {
+                $scope.showCart();
+            });
+    };
+
+    $scope.showCart();
     $scope.fillTable();
 });
