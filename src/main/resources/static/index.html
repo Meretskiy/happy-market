@@ -75,7 +75,7 @@
                 <button class="btn btn-danger" ng-click="deleteProductById(p.id)">Удалить товар из базы</button>
             </td>
             <td>
-                <button class="btn btn-success" ng-click="addProductInCart(p.id)">Добавить в корзину</button>
+                <button class="btn btn-success" ng-click="addToCart(p.id)">Добавить в корзину</button>
             </td>
         </tr>
         </tbody>
@@ -104,29 +104,27 @@
         <thead>
         <tr>
             <td>Название</td>
-            <td>Цена</td>
             <td>Количество</td>
+            <td>Цена</td>
             <td>Действие</td>
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="p in ProductInCart.item">
-            //так и не заработало отображение корзины, не разобрался как из мапы правильно вытащить на фронт
-            <td>{{p.getKey.getTitle}}</td>
-            <td>{{p.getKey.getPrice}}</td>
-            <td>{{p.getValue}}</td>
-            <td>
-                <button class="btn btn-danger" ng-click="deleteProductFromCart(p.getKey)">Удалить</button>
-            </td>
+        <tr ng-repeat="oi in Cart.items">
+            <td>{{oi.productTitle}}</td>
+            <td>{{oi.quantity}}</td>
+            <td>{{oi.quantity + ' x ' + oi.pricePerProduct + ' = ' + oi.price}}</td>
+        </tr>
+        <tr>
+            <td>Итого</td>
+            <td></td>
+            <td>{{Cart.totalPrice}}</td>
         </tr>
         </tbody>
     </table>
-
     <div>
-        <button class="btn btn-success" ng-click="clearCart()">Очистить корзину</button>
+        <button class="btn btn-danger" ng-click="clearCart()">Очистить корзину</button>
     </div>
-
-
 </div>
 </body>
 </html>

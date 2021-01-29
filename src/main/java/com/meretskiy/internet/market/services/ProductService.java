@@ -24,7 +24,11 @@ public class ProductService {
         return originalPage.map(ProductDto::new);
     }
 
-    public Optional<ProductDto> findProductById(Long id) {
+    public Optional<Product> findProductById(Long id) {
+        return productRepository.findById(id);
+    }
+
+    public Optional<ProductDto> findProductDtoById(Long id) {
         return productRepository.findById(id).map(ProductDto::new);
     }
 

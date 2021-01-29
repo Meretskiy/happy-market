@@ -1,38 +1,38 @@
 package com.meretskiy.internet.market.controllers;
 
-import com.meretskiy.internet.market.dto.ProductDto;
-import com.meretskiy.internet.market.services.Cart;
+import com.meretskiy.internet.market.beans.Cart;
+import com.meretskiy.internet.market.dto.CartDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Map;
-
 @RestController
 @RequestMapping("/api/v1/cart")
 @RequiredArgsConstructor
 public class CartController {
+
+//    @GetMapping("/clear/{id}")
+//    public void clearProductFromCart(@PathVariable Long id) {
+//        cart.clearProductFromCart(id);
+//    }
+
     private final Cart cart;
 
     @GetMapping
-    public Map<ProductDto, Integer> showCart() {
-        return cart.showCart();
+    public CartDto getCart() {
+        return new CartDto(cart);
     }
 
     @GetMapping("/add/{id}")
-    public void addProductToCart(@PathVariable Long id) {
-        cart.addProductToCart(id);
-    }
-
-    @GetMapping("/clear/{id}")
-    public void clearProductFromCart(@PathVariable Long id) {
-        cart.clearProductFromCart(id);
+    public void addToCart(@PathVariable Long id) {
+        cart.addToCart(id);
     }
 
     @GetMapping("/clear")
-    public void clearAllProductFromCart() {
-        cart.clearAllProductFromCart();
+    public void clearCart() {
+        cart.clear();
     }
+
 }

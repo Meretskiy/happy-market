@@ -29,3 +29,11 @@ values
 ('Kiwi', 170),
 ('Cola', 128),
 ('Oranges', 180);
+
+create table order_items (
+     id                      bigserial primary key,
+     title                   varchar(255),
+     quantity                int,
+     price_per_item          int,
+     price                   int
+);
