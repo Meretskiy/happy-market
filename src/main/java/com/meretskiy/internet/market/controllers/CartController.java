@@ -12,13 +12,23 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/cart")
 @RequiredArgsConstructor
 public class CartController {
-
-//    @GetMapping("/clear/{id}")
-//    public void clearProductFromCart(@PathVariable Long id) {
-//        cart.clearProductFromCart(id);
-//    }
-
     private final Cart cart;
+
+    @GetMapping("/clear/{productTitle}")
+    public void clearItem(@PathVariable String productTitle) {
+        cart.clearItem(productTitle);
+    }
+
+    @GetMapping("/add/+/{productTitle}")
+    public void incrementQuantity(@PathVariable String productTitle) {
+        cart.incrementQuantity(productTitle);
+    }
+
+    @GetMapping("/add/-/{productTitle}")
+    public void decrementQuantity(@PathVariable String productTitle) {
+        cart.decrementQuantity(productTitle);
+    }
+
 
     @GetMapping
     public CartDto getCart() {

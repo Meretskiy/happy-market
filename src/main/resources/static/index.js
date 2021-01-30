@@ -70,19 +70,33 @@ angular.module('app',[]).controller('indexController', function ($scope, $http) 
             });
     };
 
+    $scope.incrementQuantity = function (productTitle) {
+        $http.get(contextPath + '/cart/add/+/' + productTitle)
+            .then(function (response) {
+                $scope.showCart();
+            });
+    };
+
+    $scope.decrementQuantity = function (productTitle) {
+        $http.get(contextPath + '/cart/add/-/' + productTitle)
+            .then(function (response) {
+                $scope.showCart();
+            });
+    };
+
+    $scope.clearItem = function (productTitle) {
+        $http.get(contextPath + '/cart/clear/' + productTitle)
+            .then(function (response) {
+                $scope.showCart();
+            });
+    };
+
     $scope.clearCart = function () {
         $http.get(contextPath + '/cart/clear/')
             .then(function (response) {
                 $scope.showCart();
             });
     };
-
-    // $scope.deleteProductFromCart = function (productId) {
-    //     $http.get(contextPath + '/cart/clear/' + productId)
-    //         .then(function (response) {
-    //             $scope.showCart();
-    //         });
-    // };
 
     $scope.showCart();
     $scope.fillTable();
