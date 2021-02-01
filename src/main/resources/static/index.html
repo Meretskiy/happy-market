@@ -100,28 +100,42 @@
     <h2>-Страница корзины-</h2>
 
     <h3>Список товаров в корзине</h3>
-    <table class="table table-hover" cellpadding="0" cellspacing="0">
-        <thead>
-        <tr>
-            <td>Название</td>
-            <td>Количество</td>
-            <td>Цена</td>
-            <td>Действие</td>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="oi in Cart.items">
-            <td>{{oi.productTitle}}</td>
-            <td>{{oi.quantity}}</td>
-            <td>{{oi.quantity + ' x ' + oi.pricePerProduct + ' = ' + oi.price}}</td>
-        </tr>
-        <tr>
-            <td>Итого</td>
-            <td></td>
-            <td>{{Cart.totalPrice}}</td>
-        </tr>
-        </tbody>
-    </table>
+    <span ng-show="Cart.items.length==0">Корзина пустая</span>
+    <div ng-hide="Cart.items.length==0">
+        <table class="table table-hover" cellpadding="0" cellspacing="0">
+            <thead>
+            <tr>
+                <td>Название</td>
+                <td>Количество</td>
+                <td>Цена</td>
+                <td>Действие</td>
+            </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="oi in Cart.items">
+                        <td>{{oi.productTitle}}</td>
+                        <td>{{oi.quantity}}</td>
+                        <td>{{oi.quantity + ' x ' + oi.pricePerProduct + ' = ' + oi.price}}</td>
+                        <td>
+                            <button class="btn btn-success" ng-click="incrementQuantity(oi.productTitle)">+</button>
+                        </td>
+                        <td>
+                            <span ng-if="oi.quantity>1">
+                                <button class="btn btn-success" ng-click="decrementQuantity(oi.productTitle)">-</button>
+                            </span>
+                        </td>
+                        <td>
+                            <button class="btn btn-danger" ng-click="clearItem(oi.productTitle)">Удалить позицию</button>
+                        </td>
+                </tr>
+            <tr>
+                <td>Итого</td>
+                <td></td>
+                <td>{{Cart.totalPrice}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
     <div>
         <button class="btn btn-danger" ng-click="clearCart()">Очистить корзину</button>
     </div>

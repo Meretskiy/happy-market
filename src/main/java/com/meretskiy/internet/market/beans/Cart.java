@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Component
@@ -48,6 +49,17 @@ public class Cart {
         recalculate();
     }
 
+    public void clearItem(String productTitle) {
+        Iterator<OrderItem> it = items.iterator();
+        while (it.hasNext()) {
+            if (it.next().getProduct().getTitle().equals(productTitle)) {
+                it.remove();
+                recalculate();
+                break;
+            }
+        }
+    }
+
     public void clear() {
         items.clear();
         recalculate();
@@ -57,6 +69,26 @@ public class Cart {
         totalPrice = 0;
         for (OrderItem o : items) {
             totalPrice += o.getPrice();
+        }
+    }
+
+    public void incrementQuantity(String productTitle) {
+        for (OrderItem o : items) {
+            if (o.getProduct().getTitle().equals(productTitle)) {
+                o.incrementQuantity();
+                recalculate();
+                return;
+            }
+        }
+    }
+
+    public void decrementQuantity(String productTitle) {
+        for (OrderItem o : items) {
+            if (o.getProduct().getTitle().equals(productTitle)) {
+                o.decrementQuantity();
+                recalculate();
+                return;
+            }
         }
     }
 }
