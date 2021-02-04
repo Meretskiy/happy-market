@@ -1,10 +1,12 @@
 angular.module('app',[]).controller('indexController', function ($scope, $http) {
-    const contextPath = 'http://localhost:8189/market/api/v1';
+    const contextPath = 'http://localhost:8189/market';
+
+    $scope.authorized = false;
 
     //если pageIndex не указан, то по дефолту берем 1
     $scope.fillTable = function (pageIndex = 1) {
         $http({
-            url: contextPath + '/products',
+            url: contextPath + '/api/v1/products',
             method: 'GET',
             params: {
                 title: $scope.filter ? $scope.filter.title : null,
@@ -41,7 +43,7 @@ angular.module('app',[]).controller('indexController', function ($scope, $http) 
     }
 
     $scope.submitCreateNewProduct = function () {
-        $http.post(contextPath + '/products', $scope.newProduct)
+        $http.post(contextPath + '/api/v1/products', $scope.newProduct)
             .then(function (response) {
                 $scope.newProduct = null;
                 $scope.fillTable();
@@ -49,14 +51,14 @@ angular.module('app',[]).controller('indexController', function ($scope, $http) 
     };
 
     $scope.deleteProductById = function(productId) {
-        $http.delete(contextPath + '/products/' + productId)
+        $http.delete(contextPath + '/api/v1/products/' + productId)
             .then(function (response) {
                 $scope.fillTable();
             });
     };
 
     $scope.showCart = function () {
-        $http.get(contextPath + '/cart')
+        $http.get(contextPath + '/api/v1/cart')
             .then(function (response) {
                 $scope.Cart = response.data;
             });
@@ -64,40 +66,60 @@ angular.module('app',[]).controller('indexController', function ($scope, $http) 
     };
 
     $scope.addToCart = function (productId) {
-        $http.get(contextPath + '/cart/add/' + productId)
+        $http.get(contextPath + '/api/v1/cart/add/' + productId)
             .then(function (response) {
                 $scope.showCart();
             });
     };
 
     $scope.incrementQuantity = function (productTitle) {
-        $http.get(contextPath + '/cart/add/+/' + productTitle)
+        $http.get(contextPath + '/api/v1/cart/add/+/' + productTitle)
             .then(function (response) {
                 $scope.showCart();
             });
     };
 
     $scope.decrementQuantity = function (productTitle) {
-        $http.get(contextPath + '/cart/add/-/' + productTitle)
+        $http.get(contextPath + '/api/v1/cart/add/-/' + productTitle)
             .then(function (response) {
                 $scope.showCart();
             });
     };
 
     $scope.clearItem = function (productTitle) {
-        $http.get(contextPath + '/cart/clear/' + productTitle)
+        $http.get(contextPath + '/api/v1/cart/clear/' + productTitle)
             .then(function (response) {
                 $scope.showCart();
             });
     };
 
     $scope.clearCart = function () {
-        $http.get(contextPath + '/cart/clear/')
+        $http.get(contextPath + '/api/v1/cart/clear/')
             .then(function (response) {
                 $scope.showCart();
             });
     };
 
-    $scope.showCart();
-    $scope.fillTable();
+    $scope.tryToAuth = function () {
+        //в тело запроса зашиваем json user который мы собираем из наших форм на фронте
+        $http.post(contextPath + '/auth', $scope.user)
+            //прилетает или положительный ответ
+            .then(function successCallback(response) {
+                //проверяем есть ли в ответе токен
+                if (response.data.token) {
+                    //ко всем запросам на бэк создаем стандартный хедер common с названием Authorization и нашим токеном
+                    $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;
+                    $scope.user.username = null;
+                    $scope.user.password = null;
+                    $scope.authorized = true;
+                    $scope.fillTable();
+                }
+                //или отрицательный
+            }, function errorCallback(response) {
+                window.alert("Error");
+            });
+    };
+
+    // $scope.showCart();
+    // $scope.fillTable();
 });

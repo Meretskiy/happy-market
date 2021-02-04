@@ -6,7 +6,10 @@ import com.meretskiy.internet.market.model.Product;
 import com.meretskiy.internet.market.services.ProductService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.WebApplicationContext;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -15,6 +18,8 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
+//делает корзину сессионной
+@Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 @Data
 public class Cart {
     private final ProductService productService;
