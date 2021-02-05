@@ -2,6 +2,7 @@ angular.module('app',[]).controller('indexController', function ($scope, $http) 
     const contextPath = 'http://localhost:8189/market';
 
     $scope.authorized = false;
+    $scope.username = null;
 
     //если pageIndex не указан, то по дефолту берем 1
     $scope.fillTable = function (pageIndex = 1) {
@@ -100,6 +101,13 @@ angular.module('app',[]).controller('indexController', function ($scope, $http) 
             });
     };
 
+    $scope.saveOrder = function () {
+        $http.get(contextPath + '/api/v1/cart/save/')
+            .then(function (response) {
+                $scope.clearCart();
+            });
+    };
+
     $scope.tryToAuth = function () {
         //в тело запроса зашиваем json user который мы собираем из наших форм на фронте
         $http.post(contextPath + '/auth', $scope.user)
@@ -109,6 +117,7 @@ angular.module('app',[]).controller('indexController', function ($scope, $http) 
                 if (response.data.token) {
                     //ко всем запросам на бэк создаем стандартный хедер common с названием Authorization и нашим токеном
                     $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;
+                    $scope.username = $scope.user.username;
                     $scope.user.username = null;
                     $scope.user.password = null;
                     $scope.authorized = true;

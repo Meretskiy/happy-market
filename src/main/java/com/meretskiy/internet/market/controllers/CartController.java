@@ -45,4 +45,9 @@ public class CartController {
         cart.clear();
     }
 
+    @GetMapping("/save")
+    public void saveCart() {
+        cart.save();
+    }
+
 }

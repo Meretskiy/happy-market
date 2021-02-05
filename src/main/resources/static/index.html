@@ -16,9 +16,8 @@
 <div class="container" ng-controller="indexController">
     <h1>Happy Market</h1>
 
-    <h2>-Авторизация-</h2>
-
     <div class="mb-3 text-center" ng-show="!authorized">
+        <h2>-Авторизация-</h2>
         <form class="form-signin" ng-submit="tryToAuth()" style="max-width: 350px; padding: 15px; margin: 0 auto;">
             <h1 class="h3 mb-3 font-weight-normal">Пожалуйста войдите</h1>
             <label for="inputUsername" class="sr-only">Имя пользователя</label>
@@ -33,6 +32,12 @@
     </div>
 
     <div ng-show="authorized">
+
+        <div>
+            <td>
+                <h2>Пользователь: {{username}}</h2>
+            </td>
+        </div>
 
         <h2>-Страница с админ панелью-</h2>
 
@@ -156,6 +161,9 @@
         </div>
         <div>
             <button class="btn btn-danger" ng-click="clearCart()">Очистить корзину</button>
+        </div>
+        <div>
+            <button class="btn btn-success" ng-click="saveOrder()">Оформить заказ</button>
         </div>
     </div>
 </div>
