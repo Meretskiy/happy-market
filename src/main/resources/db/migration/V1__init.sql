@@ -67,10 +67,22 @@ values
 ('Cola', 128),
 ('Oranges', 180);
 
+create table orders (
+    id                      bigserial primary key,
+    owner_id                bigint not null references users (id),
+    price                   int,
+    created_at              timestamp default current_timestamp,
+    updated_at              timestamp default current_timestamp
+);
+
 create table order_items (
      id                      bigserial primary key,
+     order_id                bigint not null references orders (id),
+     product_id              bigint not null references products (id),
      title                   varchar(255),
      quantity                int,
-     price_per_item          int,
-     price                   int
+     price_per_product       int,
+     price                   int,
+     created_at              timestamp default current_timestamp,
+     updated_at              timestamp default current_timestamp
 );

@@ -44,5 +44,4 @@ public class CartController {
     public void clearCart() {
         cart.clear();
     }
-
 }
