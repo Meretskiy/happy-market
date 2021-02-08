@@ -2,8 +2,11 @@ package com.meretskiy.internet.market.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 /*
 Позиция в заказе
@@ -18,6 +21,11 @@ public class OrderItem {
     @Column(name = "id")
     private Long id;
 
+    //много order_items могут подключаться к одному заказу
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
+
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
@@ -30,6 +38,14 @@ public class OrderItem {
 
     @Column(name = "price")
     private int price;
+
+    @CreationTimestamp
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 
     public OrderItem(Product product) {
         this.product = product;
