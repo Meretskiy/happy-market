@@ -1,8 +1,9 @@
-angular.module('app',[]).controller('indexController', function ($scope, $http) {
+//зависимость ngStorage добавляет модуль локального хранилища и позволяет пользоваться $localStorage в браузере
+angular.module('app',['ngStorage']).controller('indexController', function ($scope, $http, $localStorage) {
     const contextPath = 'http://localhost:8189/market';
 
     $scope.authorized = false;
-    $scope.username = null;
+    $scope.currentUsername = null;
 
     //если pageIndex не указан, то по дефолту берем 1
     $scope.showProductsPage = function (pageIndex = 1) {
@@ -126,7 +127,12 @@ angular.module('app',[]).controller('indexController', function ($scope, $http) 
                 if (response.data.token) {
                     //ко всем запросам на бэк создаем стандартный хедер common с названием Authorization и нашим токеном
                     $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;
-                    $scope.username = $scope.user.username;
+                    //в локальное хранилище запоминаем, что мы зашли под таким пользователем с таким токеном
+                    $localStorage.happyUsername = $scope.user.username;
+                    $scope.currentUsername = $scope.user.username;
+                    $localStorage.happyTokenWithBearerPrefix = 'Bearer ' + response.data.token;
+
+
                     $scope.user.username = null;
                     $scope.user.password = null;
                     $scope.authorized = true;
@@ -140,6 +146,19 @@ angular.module('app',[]).controller('indexController', function ($scope, $http) 
             });
     };
 
-    // $scope.showCart();
-    // $scope.showProductsPage();
+    $scope.logout = function () {
+        $http.defaults.headers.common.Authorization = null;
+        delete $localStorage.happyUsername;
+        delete $localStorage.happyTokenWithBearerPrefix;
+        $scope.authorized = false;
+    }
+
+    //если в локальном хранилище есть такое имя, то мы в качестве токена автоматом подшиваем токен от сохраненного пользователя
+    if ($localStorage.happyUsername) {
+        $http.defaults.headers.common.Authorization = $localStorage.happyTokenWithBearerPrefix;
+        $scope.showProductsPage();
+        $scope.showMyOrders();
+        $scope.showCart();
+        $scope.authorized = true;
+    }
 });

@@ -8,6 +8,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.min.js"></script>
 
     <script src="index.js"></script>
 </head>
@@ -35,8 +36,12 @@
 
         <div>
             <td>
-                <h2>Пользователь: {{username}}</h2>
+                <h2>Пользователь: {{currentUsername}}</h2>
             </td>
+
+            <div class="mb-3 text-center" ng-show="authorized">
+                <button class="btn btn-danger" ng-click="logout()">Выйти</button>
+            </div>
         </div>
 
         <h2>-Страница с админ панелью-</h2>
