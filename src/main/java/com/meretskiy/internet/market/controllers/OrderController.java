@@ -1,6 +1,7 @@
 package com.meretskiy.internet.market.controllers;
 
 import com.meretskiy.internet.market.dto.OrderDto;
+import com.meretskiy.internet.market.dto.ProductDto;
 import com.meretskiy.internet.market.exceptions_handling.ResourceNotFoundException;
 import com.meretskiy.internet.market.model.User;
 import com.meretskiy.internet.market.services.OrderService;
@@ -8,10 +9,7 @@ import com.meretskiy.internet.market.services.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
@@ -25,12 +23,20 @@ public class OrderController {
     private final OrderService orderService;
     private final UserService userService;
 
-    //создаем заказ
-    @GetMapping("/create")
+//    //создаем заказ
+//    @GetMapping("/create")
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public void createOrderFromCart(Principal principal) {
+//        User user = userService.findByUsername(principal.getName()).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+//        orderService.createFromUserCart(user);
+//    }
+
+    //создаем заказ с адресом доставки
+    @PostMapping("/create/{deliveryAddress}")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createOrderFromCart(Principal principal) {
+    public void createOrderFromCart(Principal principal, @RequestBody String deliveryAddress) {
         User user = userService.findByUsername(principal.getName()).orElseThrow(() -> new ResourceNotFoundException("User not found"));
-        orderService.createFromUserCart(user);
+        orderService.createFromUserCart(user, deliveryAddress);
     }
 
     //показать все заказы

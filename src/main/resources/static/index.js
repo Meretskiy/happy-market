@@ -111,8 +111,9 @@ angular.module('app',['ngStorage']).controller('indexController', function ($sco
     };
 
     $scope.createOrder = function () {
-        $http.get(contextPath + '/api/v1/orders/create/')
+        $http.post(contextPath + '/api/v1/orders/' + $scope.deliveryAddress)
             .then(function (response) {
+                $scope.deliveryAddress = null;
                 $scope.showMyOrders();
                 $scope.showCart();
             });
