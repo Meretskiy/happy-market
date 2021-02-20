@@ -32,7 +32,7 @@ public class OrderController {
 //    }
 
     //создаем заказ с адресом доставки
-    @PostMapping("/create/{deliveryAddress}")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void createOrderFromCart(Principal principal, @RequestBody String deliveryAddress) {
         User user = userService.findByUsername(principal.getName()).orElseThrow(() -> new ResourceNotFoundException("User not found"));
