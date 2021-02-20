@@ -147,6 +147,15 @@ angular.module('app',['ngStorage']).controller('indexController', function ($sco
             });
     };
 
+    $scope.tryToRegister = function () {
+        $http.post(contextPath + '/auth/reg', this.newUser)
+            .then(function successCallback(response) {
+                window.alert("Registration completed successfully");
+            }, function errorCallback(response) {
+                window.alert("Error");
+            });
+    };
+
     $scope.logout = function () {
         $http.defaults.headers.common.Authorization = null;
         delete $localStorage.happyUsername;

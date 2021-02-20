@@ -23,14 +23,6 @@ public class OrderController {
     private final OrderService orderService;
     private final UserService userService;
 
-//    //создаем заказ
-//    @GetMapping("/create")
-//    @ResponseStatus(HttpStatus.CREATED)
-//    public void createOrderFromCart(Principal principal) {
-//        User user = userService.findByUsername(principal.getName()).orElseThrow(() -> new ResourceNotFoundException("User not found"));
-//        orderService.createFromUserCart(user);
-//    }
-
     //создаем заказ с адресом доставки
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
