@@ -111,8 +111,9 @@ angular.module('app',['ngStorage']).controller('indexController', function ($sco
     };
 
     $scope.createOrder = function () {
-        $http.get(contextPath + '/api/v1/orders/create/')
+        $http.post(contextPath + '/api/v1/orders/', $scope.deliveryAddress)
             .then(function (response) {
+                $scope.deliveryAddress = null;
                 $scope.showMyOrders();
                 $scope.showCart();
             });
@@ -141,6 +142,15 @@ angular.module('app',['ngStorage']).controller('indexController', function ($sco
                     $scope.showMyOrders();
                 }
                 //или отрицательный
+            }, function errorCallback(response) {
+                window.alert("Error");
+            });
+    };
+
+    $scope.tryToRegister = function () {
+        $http.post(contextPath + '/auth/reg', this.newUser)
+            .then(function successCallback(response) {
+                window.alert("Registration completed successfully");
             }, function errorCallback(response) {
                 window.alert("Error");
             });

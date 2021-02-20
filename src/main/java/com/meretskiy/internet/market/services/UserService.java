@@ -1,5 +1,6 @@
 package com.meretskiy.internet.market.services;
 
+import com.meretskiy.internet.market.dto.UserDto;
 import com.meretskiy.internet.market.model.Role;
 import com.meretskiy.internet.market.model.User;
 import com.meretskiy.internet.market.repositories.UserRepository;
@@ -9,6 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +25,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
+    //автоматом кодирует наш пароль
+    private final BCryptPasswordEncoder encoder;
+    private final RoleService roleService;
 
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
@@ -41,5 +46,12 @@ public class UserService implements UserDetailsService {
     //преобразовываем наши роли в те права доступа, которые понимает спринг секьюрити
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
+    }
+
+    public void createNewUser(UserDto userDto) {
+        userDto.setPassword(encoder.encode(userDto.getPassword()));
+        User newUser = new User(userDto);
+        newUser.getRoles().add(roleService.getRoleForNewUser());
+        userRepository.save(newUser);
     }
 }

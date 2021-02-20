@@ -15,8 +15,8 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final Cart cart;
 
-    public Order createFromUserCart(User user) {
-        Order order = new Order(cart, user);
+    public Order createFromUserCart(User user, String deliveryAddress) {
+        Order order = new Order(cart, user, deliveryAddress);
         order = orderRepository.save(order);
         //только после того как заказ сохранился в базу можем почистить корзину
         cart.clear();

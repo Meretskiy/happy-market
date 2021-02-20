@@ -3,6 +3,7 @@ package com.meretskiy.internet.market.controllers;
 import com.meretskiy.internet.market.beans.JwtTokenUtil;
 import com.meretskiy.internet.market.dto.JwtRequest;
 import com.meretskiy.internet.market.dto.JwtResponse;
+import com.meretskiy.internet.market.dto.UserDto;
 import com.meretskiy.internet.market.exceptions_handling.MarketError;
 import com.meretskiy.internet.market.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -43,5 +44,15 @@ public class AuthController {
         String token = jwtTokenUtil.generateToken(userDetails);
         //возвращаем клиенту в респонсе этот токен
         return ResponseEntity.ok(new JwtResponse(token));
+    }
+
+    @PostMapping("/auth/reg")
+    public ResponseEntity<?> createNewUser(@RequestBody UserDto userDto) {
+        try {
+            userService.createNewUser(userDto);
+            return ResponseEntity.ok(HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new MarketError(HttpStatus.BAD_REQUEST.value(), "Incorrect username or email"), HttpStatus.BAD_REQUEST);
+        }
     }
 }
