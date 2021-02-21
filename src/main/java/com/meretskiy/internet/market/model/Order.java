@@ -34,8 +34,8 @@ public class Order {
     @Column(name = "price")
     private int price;
 
-    @Column(name = "delivery_address")
-    private String deliveryAddress;
+    @Column(name = "address")
+    private String address;
 
     @CreationTimestamp
     @Column(name = "created_at")
@@ -46,11 +46,11 @@ public class Order {
     private LocalDateTime updatedAt;
 
     //собираем заказ из корзины конкретного юзера
-    public Order(Cart cart, User user, String deliveryAddress) {
+    public Order(Cart cart, User user, String address) {
         this.items = new ArrayList<>();
         this.owner = user;
         this.price = cart.getTotalPrice();
-        this.deliveryAddress = deliveryAddress;
+        this.address = address;
         cart.getItems().stream().forEach((oi) -> {
             oi.setOrder(this);
             items.add(oi);

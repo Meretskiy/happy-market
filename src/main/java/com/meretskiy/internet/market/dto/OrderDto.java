@@ -17,7 +17,7 @@ public class OrderDto {
         this.id = order.getId();
         this.username = order.getOwner().getUsername();
         this.totalPrice = order.getPrice();
-        this.address = order.getDeliveryAddress();
+        this.address = order.getAddress();
         this.creationDateTime = order.getCreatedAt().toString();
     }
 }

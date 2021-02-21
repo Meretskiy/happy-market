@@ -3,6 +3,7 @@ package com.meretskiy.internet.market.controllers;
 import com.meretskiy.internet.market.dto.OrderDto;
 import com.meretskiy.internet.market.dto.ProductDto;
 import com.meretskiy.internet.market.exceptions_handling.ResourceNotFoundException;
+import com.meretskiy.internet.market.model.Order;
 import com.meretskiy.internet.market.model.User;
 import com.meretskiy.internet.market.services.OrderService;
 import com.meretskiy.internet.market.services.UserService;
@@ -26,9 +27,16 @@ public class OrderController {
     //создаем заказ с адресом доставки
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createOrderFromCart(Principal principal, @RequestBody String deliveryAddress) {
+    public OrderDto createOrderFromCart(Principal principal, @RequestParam String address) {
         User user = userService.findByUsername(principal.getName()).orElseThrow(() -> new ResourceNotFoundException("User not found"));
-        orderService.createFromUserCart(user, deliveryAddress);
+        Order order = orderService.createFromUserCart(user, address);
+        return new OrderDto(order);
+    }
+
+    @GetMapping("/{id}")
+    public OrderDto getOrderById(@PathVariable Long id) {
+        Order order = orderService.findById(id).orElseThrow(() -> new ResourceNotFoundException("Order not found"));
+        return new OrderDto(order);
     }
 
     //показать все заказы

@@ -23,11 +23,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                //TODO че происходит?
                 .csrf().disable()
                 .authorizeRequests()
                 //без токена сюда уже не зайти
-                .antMatchers("/api/v1/**").authenticated()
+                .antMatchers("/api/v1/cart/**").authenticated()
+                .antMatchers("/api/v1/orders/**").authenticated()
                 .antMatchers("/h2-console/**").permitAll()
                 .anyRequest().permitAll()
                 .and()
