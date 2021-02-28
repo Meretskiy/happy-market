@@ -47,14 +47,7 @@ public class MyProfiler {
             count += methodCountMap.get(methodName);
         }
         methodCountMap.put(methodName, count);
-
-        log.info(
-                methodCountMap.entrySet().stream()
-                        .sorted((e1, e2) -> e2.getValue() - e1.getValue())
-                        .limit(1)
-                        .collect(Collectors.toList())
-                        .toString()
-        );
+        log.info(String.valueOf(methodCountMap.entrySet().stream().max(Comparator.comparingInt(Map.Entry::getValue)).get()));
     }
 
     /**
@@ -78,11 +71,7 @@ public class MyProfiler {
             duration += executionTimeMap.get(methodName);
         }
         executionTimeMap.put(methodName, duration);
-
-        Map.Entry<String, Long> maxTimeDuration =
-                executionTimeMap.entrySet().stream().max((e1, e2) -> e1.getValue() > e2.getValue() ? 1 : -1).get();
-        log.info("[" + maxTimeDuration.getKey() + "] : [" + maxTimeDuration.getValue() + "]");
-
+        log.info(String.valueOf(executionTimeMap.entrySet().stream().max(Comparator.comparingLong(Map.Entry::getValue)).get()));
         return out;
     }
 }
