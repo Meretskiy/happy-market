@@ -43,3 +43,30 @@ Task 14
 
 1. Добавить к заказу возможность указания адреса доставки в виде строки
 2. Сделать регистрацию пользователей через REST API
+
+Task 16
+
+1. Используя Spring-WS, реализовать Web Service для выгрузки списка товаров.
+
+    Тест браузер: http://localhost:8189/market/ws/productsWS.wsdl
+    Тест Postman: http://localhost:8189/market/ws
+
+    getAllProductsRequest:
+
+    <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:f="http://www.meretskiy.com/happy/market/ws/productsWS">
+        <soapenv:Header/>
+        <soapenv:Body>
+            <f:getAllProductsRequest/>
+        </soapenv:Body>
+    </soapenv:Envelope>
+
+    getProductByIdRequest:
+
+    <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:market="http://www.meretskiy.com/happy/market/ws/productsWS">
+        <soapenv:Header/>
+        <soapenv:Body>
+            <market:getProductByIdRequest>
+                <market:id>5</market:id>
+            </market:getProductByIdRequest>
+        </soapenv:Body>
+    </soapenv:Envelope>
